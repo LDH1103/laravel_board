@@ -40,10 +40,10 @@ class BoardsController extends Controller
      */
     public function store(Request $req)
     {
+        // 새로 생성해야 하는 데이터기 때문에(insert), 새로운 객체를 생성함(new Boards)
         $boards = new Boards([
             'title'     => $req->input('title')
             ,'content'  => $req->input('content')
-            ,'hits'     => 0
         ]);
         $boards->save();
         return redirect('/boards');
@@ -124,6 +124,13 @@ class BoardsController extends Controller
         //     'deleted_at'     => now()
         // ]);
 
+        // ----------------------
+        
+        // Boards::find($id)->delete();
+
+        // ---------------------- 
+        // destory()와 delete()의 차이: destory()는 파라미터를 PK(id)를 받아야함,
+        
         Boards::destroy($id);
 
         return redirect('/boards');
