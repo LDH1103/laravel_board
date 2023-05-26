@@ -110,10 +110,18 @@ class BoardsController extends Controller
      */
     public function destroy($id)
     {
+        // $boards = Boards::find($id);
+        // $boards->deleted_at = now();
+        // $boards->save();
+
+        // ----------------------
+
         // Boards::where('id', $id)->update([
         //     'deleted_at'     => now()
         // ]);
-        
+
+        Boards::destroy($id);
+
         return redirect('/boards');
     }
 }
