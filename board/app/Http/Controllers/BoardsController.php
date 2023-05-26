@@ -102,6 +102,9 @@ class BoardsController extends Controller
         // 둘중 하나 사용
         // return redirect('/boards/'.$id);
         return redirect()->route('boards.show', ['board' => $id]);
+
+        // view()를 사용해야 할 때 :
+        // redirect()를 사용해야 할 때 :
     }
 
     /**
