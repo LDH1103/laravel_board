@@ -1,0 +1,1 @@
+xcopy D:\workspace\laravel_board C:\Apache24\htdocs\laravel_board /H /Y /F /E /exclude:D:\workspace\laravel_board\exclude.txt
