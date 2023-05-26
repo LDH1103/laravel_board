@@ -87,19 +87,21 @@ class BoardsController extends Controller
      */
     public function update(Request $req, $id)
     {
-        // $boards = Boards::find($id);
-        // $boards->title = $req->input('title');
-        // $boards->content = $req->input('content');
-        // $boards->save();
+        $boards = Boards::find($id);
+        $boards->title = $req->title;
+        $boards->content = $req->content;
+        $boards->save();
 
         // ----------------------
 
-        Boards::where('id', $id)->update([
-            'title'     => $req->input('title')
-            ,'content'  => $req->input('content')
-        ]);
+        // Boards::where('id', $id)->update([
+        //     'title'     => $req->title
+        //     ,'content'  => $req->content
+        // ]);
         
-        return view('detail')->with('data', Boards::findOrFail($id));
+        // 둘중 하나 사용
+        // return redirect('/boards/'.$id);
+        return redirect()->route('boards.show', ['board' => $id]);
     }
 
     /**
