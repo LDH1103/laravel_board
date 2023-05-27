@@ -98,6 +98,7 @@ class BoardsController extends Controller
     {
         $boards = Boards::find($id);
         $boards->hits++; // 조회수 올려주기
+        $boards->timestamps = false; // 조회수 올려도 수정일자 바뀌지않게
         $boards->save();
 
         // find() : 에외발생시 false만 리턴, 프로그램이 계속 실행됨

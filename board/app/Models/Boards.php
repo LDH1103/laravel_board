@@ -16,4 +16,10 @@ class Boards extends Model
     protected $guarded = ['id', 'created_at'];
 
     protected $dates = ['deleted_at'];
+
+    public function updateHits()
+    {
+        $this->hits++;
+        $this->saveQuietly();
+    }
 }

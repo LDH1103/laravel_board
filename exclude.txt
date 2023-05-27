@@ -1,7 +1,6 @@
 .git
 bootstrap
 lang
-public
 storage
 tests
 vendor
