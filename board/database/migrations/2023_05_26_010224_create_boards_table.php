@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 30);
             $table->string('content', 2000);
-            $table->integer('hits');
+            $table->integer('hits')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

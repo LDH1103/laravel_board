@@ -17,9 +17,9 @@ return new class extends Migration
 
         // 기존 테이블 alter
         // hits 컬럼에 기본값을 넣어주기 위함 : php artisan migrate
-        Schema::table('boards', function (Blueprint $table) {
-            $table->integer('hits')->default(0)->change();
-        });
+        // Schema::table('boards', function (Blueprint $table) {
+        //     $table->integer('hits')->default(0)->change();
+        // });
     }
 
     /**
