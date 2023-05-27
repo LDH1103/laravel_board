@@ -29,8 +29,9 @@
 
 /* 테두리 */
 .contentsBorder {
-    border: 1px solid #eea8cc83;
+    border: 1px solid #eea8cc8e;
     border-radius: 10px;
+    margin-bottom: 50px;
 }
 /* /테두리 */
 
@@ -39,6 +40,7 @@
     text-align: center;
     background-color: rgb(0, 0, 0);
     font-family: 'TheJamsil5Bold';
+    padding: 5px;
 }
 /* /푸터 */
 
