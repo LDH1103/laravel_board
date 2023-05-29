@@ -24,3 +24,16 @@ hr {
     margin: 10px;
 }
 /* /hr 태그 */
+
+/* 페이징 버튼 */
+.listPageButton {
+    text-align: center;
+}
+.listPageButton > a {
+    text-decoration: none;
+    color: black;
+}
+.pageHidden {
+    visibility: hidden;
+}
+/* /페이징 버튼 */

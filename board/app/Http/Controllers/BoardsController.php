@@ -61,8 +61,14 @@ class BoardsController extends Controller
     public function index()
     {
         // $result = Boards::all();
-        $result = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('hits', 'DESC')->get();
-        return view('list')->with('data', $result);
+        // $result = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('hits', 'DESC')->get();
+        // return view('list')->with('data', $result);
+
+        // laravel 페이징 사용
+        // ->get() 대신, ->paginate(한페이지에 보여줄 글 갯수)를 사용
+        // return view('뷰파일 이름', compact('보내줄 변수명')); 
+        $data = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('id', 'DESC')->paginate(10);
+        return view('list', compact('data'));
     }
 
     /**
