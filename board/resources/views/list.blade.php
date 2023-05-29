@@ -11,20 +11,20 @@
 
 <div class="container text-center contentsBorder">
     <div class="row listInfo">
-        <div class="col">글 번호</div>
-        <div class="col">글 제목</div>
-        <div class="col">조회수</div>
-        <div class="col">등록일</div>
-        <div class="col">수정일</div>
+        <div class="col col-1">글 번호</div>
+        <div class="col col-6">글 제목</div>
+        <div class="col col-1">조회수</div>
+        <div class="col col-2">등록일</div>
+        <div class="col col-2">수정일</div>
     </div>
     <hr>
     @forelse($data as $item)
     <div class="row">
-        <div class="col">{{$item->id}}</div>
-        <div class="col"><a href="{{route('boards.show', ['board' => $item->id])}}">{{$item->title}}</a></div>
-        <div class="col">{{$item->hits}}</div>
-        <div class="col">{{$item->created_at}}</div>
-        <div class="col">{{$item->updated_at}}</div>
+        <div class="col col-1">{{$item->id}}</div>
+        <div class="col colTitle"><a href="{{route('boards.show', ['board' => $item->id])}}" class="aTagNone">{{$item->title}}</a></div>
+        <div class="col col-1">{{$item->hits}}</div>
+        <div class="col col-2">{{$item->created_at}}</div>
+        <div class="col col-2">{{$item->updated_at}}</div>
     </div>
     @empty
     <div class="row">
@@ -49,27 +49,9 @@
 
     해줘야 부트스트랩과 호환됨
     페이징 커스텀하기 :
-    @if ($data->onFirstPage())
-        <a href="{{ $data->previousPageUrl() }}" rel="prev" class="pageHidden">이전</a>
-    @else
-        <a href="{{ $data->previousPageUrl() }}" rel="prev">이전</a>
-    @endif
-
-    @if ($data->currentPage() > 1)
-        <a href="{{ $data->previousPageUrl() }}"></a>
-    @endif
-    @for($i = 1; $i <= $data->lastPage(); $i++)
-        <a href="{{$data->url($i)}}">{{$i}}</a>
-    @endfor
-    @if ($data->currentPage() < $data->lastPage())
-        <a href="{{$data->nextPageUrl()}}"></a>
-    @endif
-
-    @if ($data->hasMorePages())
-        <a href="{{ $data->nextPageUrl() }}" rel="next">다음</a>
-    @else
-        <a href="{{ $data->nextPageUrl() }}" rel="next" class="pageHidden">다음</a>
-    @endif
+    @foreach(range($startPage, $endPage) as $i)
+        <a href="{{$paginator->url($i)}}">{{$i}}</a>
+    @endforeach
 
     currentPage(): 현재 페이지의 번호를 가져옴
     hasPages(): 페이지가 있는지 여부를 확인
@@ -87,7 +69,7 @@
 
     좀더 세분화 해서 작업하기 : 
         1. php artisan vendor:publish --tag=laravel-pagination 명령어로 views폴더 안에 vendor/pagination 폴더를 생성
-        2. resources/views/vendor/pagination/custom.blade.php 파일을 생성
+        2. resources/views/vendor/pagination/custom.blade.php 파일을 생성 및 페이징 작업
         3. 리스트 뷰파일에서 {{ $data->links('vendor.pagination.custom') }}
 --}}
     {{ $data->links('vendor.pagination.custom') }}

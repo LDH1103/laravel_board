@@ -3,4 +3,4 @@ bootstrap
 lang
 storage
 tests
-vendor
+board\vendor

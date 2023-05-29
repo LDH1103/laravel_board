@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail</title>
-</head>
-<body>
+@extends('layout.layout')
+
+@section('title', '상세 페이지')
+
+@section('css')
+<link rel="stylesheet" href="{{asset('css/datail.css')}}">
+@endsection
+
+@section('contents')
     <button type="button" onclick="location.href='{{route('boards.index')}}'">리스트 페이지로</button>
     <button type="button" onclick="location.href='{{route('boards.edit', ['board' => $data->id])}}'">수정 페이지로</button>
     <form action="{{route('boards.destroy', ['board' => $data->id])}}" method="post">
@@ -27,5 +27,7 @@
         <br>
         조회수 : {{$data->hits}}
     </div>
-</body>
-</html>
+@endsection
+
+@section('js')
+@endsection

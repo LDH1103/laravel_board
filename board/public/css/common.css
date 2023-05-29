@@ -41,6 +41,9 @@
     background-color: rgb(0, 0, 0);
     font-family: 'TheJamsil5Bold';
     padding: 5px;
+    position: relative;
+    width: 100%;
+    border-top: 1px solid #7e7e7e;
 }
 /* /푸터 */
 
@@ -49,3 +52,9 @@ hr {
     margin: 0;
 }
 /* /hr 태그 */
+
+/* a태그 밑줄 제거 */
+.aTagNone {
+    text-decoration: none;
+}
+/* /a태그 밑줄 제거 */

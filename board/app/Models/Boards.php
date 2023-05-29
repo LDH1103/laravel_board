@@ -17,6 +17,7 @@ class Boards extends Model
 
     protected $dates = ['deleted_at'];
 
+    // 230528 add
     public function updateHits()
     {
         $this->hits++;
