@@ -60,3 +60,9 @@ hr {
     text-decoration: none;
 }
 /* /a태그 밑줄 제거 */
+
+/* 에러메시지 */
+.divError {
+    color: red;
+}
+/* /에러메시지 */

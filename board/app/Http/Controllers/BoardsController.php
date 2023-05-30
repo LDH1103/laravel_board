@@ -57,6 +57,7 @@ use App\Models\Boards;
 // + Laravel 프레임워크에서 제공하는 쿠키(Cookie) 기능을 사용하기 위해 필요한 클래스를 선언
 // + Laravel의 Facade를 사용하여 쿠키와 관련된 기능에 쉽게 접근할 수 있도록 도와줍
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator; // v002 add
 
 class BoardsController extends Controller
 {
@@ -175,19 +176,45 @@ class BoardsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, $id)
-    {
+    public function update(Request $req, $id) {
 
         // v002 add start
         // 유효성 검사
 
+        // id를 리퀘스트 객체에 합치기
         $req->request->add(['id' => $id]);
 
-        $req->validate([
-            'title'     => 'required|between:3,30'
-            ,'content'  => 'required|max:2000'
-            ,'id'       => 'required|numeric'
-        ]);
+        // 다른방법
+        // $arr = ['id' => $id];
+        // $req->merge($arr);
+
+        // 유효성 검사 방법 1 : error나면 바로 return
+        // $req->validate([
+        //     'title'     => 'required|between:3,30'
+        //     ,'content'  => 'required|max:2000'
+        //     ,'id'       => 'required|integer'
+        //     // ,'id'       => 'required|numeric'
+        // ]);
+
+        // 유효성 검사 방법 2 : error나면 return하지않고 $validator에 값을 담음
+        $validator = Validator::make(
+            $req->only('id', 'title', 'content')
+            ,[
+                'title'     => 'required|between:3,30'
+                ,'content'  => 'required|max:2000'
+                ,'id'       => 'required|integer'
+            ]
+        );
+
+        // $validator->fails() : error가 있다면 true
+        if($validator->fails()) {
+            // redirect()->back(); : 이전에 요청이 왔던 페이지로 돌아감
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput($req->only('title', 'content'));
+        }
+        
         // v002 add end
 
         $boards = Boards::find($id);
