@@ -73,6 +73,6 @@ class UserController extends Controller
         // 회원가입 완료 후 로그인 페이지로 이동
         return redirect()
             ->route('users.login')
-            ->with('success', '회원가입을 완료 했습니다.<br>가입하신 아이디와 비밀번호로 로그인 해 주십시오.');
+            ->with('success', '회원가입을 완료 했습니다. 가입하신 아이디와 비밀번호로 로그인 해 주십시오.');
     }
 }
