@@ -44,6 +44,8 @@
     position: relative;
     width: 100%;
     border-top: 1px solid #7e7e7e;
+    position: fixed;
+    bottom: 0;
 }
 /* /푸터 */
 

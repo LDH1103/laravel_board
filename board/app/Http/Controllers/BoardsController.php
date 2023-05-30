@@ -1,4 +1,11 @@
 <?php
+/**************************************************
+ * 프로젝트명   : laravel_board
+ * 디렉토리     : Controllers
+ * 파일명       : BoardsController.php
+ * 이력         :   v001 0526 DH.Lee new
+ *                  v002 0530 DH.Lee 유효성 체크 추가
+**************************************************/
 
 // + 쿼리 빌더:
 // + SQL 쿼리를 프로그래밍 방식으로 작성하기 위한 도구
@@ -78,7 +85,13 @@ class BoardsController extends Controller
      */
     public function create()
     {
+        // 버전관리 예시
+        // v003 update start
+
+        // return view('index');
         return view('write');
+
+        // v003 update end
     }
 
     /**
@@ -89,6 +102,18 @@ class BoardsController extends Controller
      */
     public function store(Request $req)
     {
+
+        // v002 add start
+        // 유효성 검사
+
+        $req->validate([
+            // '받은 값' => '체크해줄것'
+            'title'     => 'required|between:3,30'
+            ,'content'  => 'required|max:2000'
+        ]);
+        
+        // v002 add end
+        
         // 새로 생성해야 하는 데이터기 때문에(insert), 새로운 객체를 생성함(new Boards)
         $boards = new Boards([
             'title'     => $req->input('title')
@@ -152,6 +177,19 @@ class BoardsController extends Controller
      */
     public function update(Request $req, $id)
     {
+
+        // v002 add start
+        // 유효성 검사
+
+        $req->request->add(['id' => $id]);
+
+        $req->validate([
+            'title'     => 'required|between:3,30'
+            ,'content'  => 'required|max:2000'
+            ,'id'       => 'required|numeric'
+        ]);
+        // v002 add end
+
         $boards = Boards::find($id);
         $boards->title = $req->title;
         $boards->content = $req->content;
