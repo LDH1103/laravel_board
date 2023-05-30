@@ -8,7 +8,6 @@
 <div class="divInsertBtn">
     <a href="{{route('boards.create')}}" class="insertBtn">작성하기</a>
 </div>
-
 <div class="container text-center contentsBorder">
     <div class="row listInfo">
         <div class="col col-1">글 번호</div>

@@ -10,12 +10,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class UserController extends Controller
 {
     function login() {
         return view('login');
+    }
+
+    function loginpost(Request $req) {
+        // 유효성 검사
+        $req->validate([
+            'email'    => 'required|email|max:100'
+            ,'password' => 'required|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
+        ]);
+
+        // 유저 정보 습득
+        $user = User::where('email', $req->email)->first();
+        if(!$user || !(Hash::check($req->password, $user->password))) {
+            $errors[] = '아이디와 비밀번호를 확인해 주세요.';
+            return redirect()->back()->with('errors', collect($errors));
+        }
+
+        // 유저 인증작업
+        Auth::login($user);
+        // Auth::check() : 인증작업 성공여부
+        if(Auth::check()) {
+            session($user->only('id')); // 세션에 인증된 회원 pk 등록
+            return redirect()->intended(route('boards.index'));
+        } else {
+            $errors[] = '인증작업 에러';
+            return redirect()->back()->with('errors', collect($errors));
+        }
     }
 
     function registration() {
@@ -27,7 +54,7 @@ class UserController extends Controller
         $req->validate([
             'name'      => 'required|regex:/^[가-힣]+$/|min:2|max:30'
             ,'email'    => 'required|email|max:100'
-            ,'password' => 'required_unless:password,passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/' // required_unless : 뒤 두개의 값이 같은지 비교함
+            ,'password' => 'required_with:passwordchk|same:passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/' // required_with:passwordchk|same:passwordchk : 비밀번호와 비밀번호 확인을 비교함
         ]);
 
         $data['name'] = $req->name;

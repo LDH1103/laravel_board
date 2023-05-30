@@ -8,6 +8,8 @@
 
 @section('contents')
     <div>Login</div>
+    @include('layout.inc.errorsvalidate')
+    <div>{{isset($success) ? $success : ''}}</div>
     <form action="{{route('users.login.post')}}" method="POST">
         @csrf
         <label for="email">Email : </label>
