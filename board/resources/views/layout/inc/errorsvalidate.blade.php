@@ -4,3 +4,7 @@
         <div class="divError">{{$error}}</div>
     @endforeach
 @endif
+
+@if(session()->has('error'))
+    <div class="divError">{!!session('error')!!}</div>
+@endif

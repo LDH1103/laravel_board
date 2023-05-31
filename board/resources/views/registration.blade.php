@@ -20,7 +20,7 @@
         <label for="password">password : </label>
         <input type="password" name="password" id="password">
         <br>
-        <label for="passwordchk">password : </label>
+        <label for="passwordchk">password check : </label>
         <input type="password" name="passwordchk" id="passwordchk">
         <br>
         <button type="submit">Registration</button>
