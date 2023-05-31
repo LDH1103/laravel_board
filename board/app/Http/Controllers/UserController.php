@@ -40,6 +40,8 @@ class UserController extends Controller
         if(Auth::check()) {
             session($user->only('id')); // 세션에 인증된 회원 pk 등록
             // session($user->only('id', 'name')); // 세션으로 이름출력하기 test
+            // + intended() : 사용자가 로그인하기 전에 접근하려고 했던 URL로 사용자를 리다이렉트
+            // + intended(route('boards.index')) : 사용자가 로그인하기 전에 게시판의 인덱스 페이지로 접근하려고 했었다면, 로그인 후에는 해당 페이지로 자동으로 리다이렉트함
             return redirect()->intended(route('boards.index'));
         } else {
             $error = '인증작업 에러';
