@@ -39,7 +39,7 @@ class UserController extends Controller
         // Auth::check() : 인증작업 성공여부
         if(Auth::check()) {
             session($user->only('id')); // 세션에 인증된 회원 pk 등록
-            // session($user->only(['id', 'name'])); // 세션으로 이름출력하기 test
+            // session($user->only('id', 'name')); // 세션으로 이름출력하기 test
             return redirect()->intended(route('boards.index'));
         } else {
             $error = '인증작업 에러';
