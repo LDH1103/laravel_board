@@ -5,6 +5,7 @@
     {{-- 로그인 된 상태 --}}
     @auth
         <div>{{Auth::user()->name."님, 환영합니다."}}</div>
+        {{-- <div>{{session('name')."님, 환영합니다."}}</div> 세션으로 이름출력 test --}}
         <a href="{{route('users.logout')}}">로그아웃</a>
         <a href="{{route('users.edit')}}">정보수정</a>
     @endauth
