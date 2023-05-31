@@ -96,23 +96,35 @@ class UserController extends Controller
         if(auth()->guest()) {
             return redirect()->route('users.login');
         }
+
         return view('useredit');
     }
 
     public function editpost(Request $req) {
-        // var_dump($req);
+        // var_dump(Auth::user()->password);
         // return 'aaa';
 
-        if($req->name) {
+        if($req->name && $req->password) {
             $req->validate([
                 'name'      => 'required|regex:/^[가-힣]+$/|min:2|max:30'
+                ,'password' => 'required_with:passwordchk|same:passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
+                ,'currentPw' => 'regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
+            ]);
+        } else if($req->name) {
+            $req->validate([
+                'name'      => 'required|regex:/^[가-힣]+$/|min:2|max:30'
+                ,'currentPw' => 'regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
+            ]);
+        } else if($req->password) {
+            $req->validate([
+                'password' => 'required_with:passwordchk|same:passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
+                ,'currentPw' => 'regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
             ]);
         }
 
-        if($req->password) {
-            $req->validate([
-                'password' => 'required_with:passwordchk|same:passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
-            ]);
+        $currentPw = Hash::check($req->currentPw, Auth::user()->password);
+        if(!$currentPw) {
+            return redirect()->back()->with('error', '현재 비밀번호가 일치하지 않습니다.');
         }
 
         $samePW = Hash::check($req['password'], Auth::user()->password);
@@ -121,6 +133,7 @@ class UserController extends Controller
         }
 
         $user = User::find(Auth::user()->id);
+
         if($req->name) {
             $user['name'] = $req->name;
         }
@@ -128,6 +141,7 @@ class UserController extends Controller
         if($req->password) {
             $user['password'] = Hash::make($req->password);
         }
+
         $user->save();
 
         return redirect()->route('users.edit');
