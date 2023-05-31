@@ -17,24 +17,24 @@ apiForm.addEventListener('submit', (event) => {
             "X-Requested-With": "XMLHttpRequest" 
         }
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            return response.json(); // 응답 데이터를 JSON 형식으로 변환하여 반환
-        })
-        .then(data => {
-            // 성공적으로 응답을 받았을 때의 처리
-            // apiData.innerHTML = JSON.stringify(data); // 데이터를 문자열로 변환하여 출력
-            let formattedData = '';
-            // Object.entries(data) : 객체의 속성과 값으로 구성된 배열을 반환
-            Object.entries(data).forEach(([key, value]) => {
-                formattedData += `${key}: ${value}<br>`;
-            });
-            apiData.innerHTML = formattedData; // 형식화된 데이터를 출력
-        })
-        .catch(error => {
-            // 에러 발생 시의 처리
-            apiData.innerHTML = error;
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        return response.json(); // 응답 데이터를 JSON 형식으로 변환하여 반환
+    })
+    .then(data => {
+        // 성공적으로 응답을 받았을 때의 처리
+        // apiData.innerHTML = JSON.stringify(data); // 데이터를 문자열로 변환하여 출력
+        let formattedData = '';
+        // Object.entries(data) : 객체의 속성과 값으로 구성된 배열을 반환
+        Object.entries(data).forEach(([key, value]) => {
+            formattedData += `${key}: ${value}<br>`;
         });
+        apiData.innerHTML = formattedData; // 형식화된 데이터를 출력
+    })
+    .catch(error => {
+        // 에러 발생 시의 처리
+        apiData.innerHTML = error;
+    });
 });
