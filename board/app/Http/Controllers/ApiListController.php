@@ -12,6 +12,15 @@ class ApiListController extends Controller
     // + $id를 사용하여 Boards 모델에서 해당 게시물을 찾고, JSON 형식으로 응답함
     public function getlist($id) {
         $user = Boards::find($id);
+    
+        if(!$user) {
+            $arrData['code'] = 'E01';
+            $arrData['msg'] = 'Not Found';
+            $arrData['errmsg'] = 'The requested page does not exist';
+
+            return $arrData;
+        }
+
         return response()->json($user, 200);
     }
 

@@ -26,11 +26,16 @@ apiForm.addEventListener('submit', (event) => {
     .then(data => {
         // 성공적으로 응답을 받았을 때의 처리
         // apiData.innerHTML = JSON.stringify(data); // 데이터를 문자열로 변환하여 출력
-        let formattedData = '';
+        let formattedData = ''; // 객체를 JSON 문자열로 변환하여 포맷팅
         // Object.entries(data) : 객체의 속성과 값으로 구성된 배열을 반환
         Object.entries(data).forEach(([key, val]) => {
             formattedData += `${key}: ${val}<br>`;
         });
+        if (data.data) {
+            Object.entries(data.data).forEach(([key, value]) => {
+                formattedData += ` - ${key}: ${value}<br>`;
+            });
+        }
         apiData.innerHTML = formattedData; // 형식화된 데이터를 출력
     })
     .catch(error => {
