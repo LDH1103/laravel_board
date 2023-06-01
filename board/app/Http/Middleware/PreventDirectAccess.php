@@ -10,8 +10,7 @@ class PreventDirectAccess
     // + PHP에서 익명 함수(클로저)를 표현하는 데 사용
     // + 클로저는 콜백이나 함수 매개변수로 사용되며, 나중에 실행할 수 있는 작은 코드 블록을 정의하는 데 사용됨
     // + Laravel 미들웨어에서 Closure class는 다음 미들웨어나 라우트 핸들러를 나타내는 데 사용함
-    public function handle($request, Closure $next)
-    {
+    public function handle($request, Closure $next){
         // + 요청이 Ajax || JSON일때만 허용
         // + wantsJson() : 현재 요청이 JSON 응답을 원하는지 여부
         if ($request->ajax() || $request->wantsJson()) {

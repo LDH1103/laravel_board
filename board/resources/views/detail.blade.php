@@ -3,7 +3,7 @@
 @section('title', '상세 페이지')
 
 @section('css')
-<link rel="stylesheet" href="{{asset('css/datail.css')}}">
+    <link rel="stylesheet" href="{{asset('css/datail.css')}}">
 @endsection
 
 @section('contents')

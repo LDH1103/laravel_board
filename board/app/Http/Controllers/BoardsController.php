@@ -69,9 +69,9 @@ class BoardsController extends Controller
     public function index()
     {
         // 로그인 체크(로그인 안된상태면 접근 못하게)
-        // if(auth()->guest()) {
-        //     return redirect()->route('users.login');
-        // }
+        if(auth()->guest()) {
+            return redirect()->route('users.login');
+        }
 
         // $result = Boards::all();
         // $result = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('hits', 'DESC')->get();

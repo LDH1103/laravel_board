@@ -28,8 +28,8 @@ apiForm.addEventListener('submit', (event) => {
         // apiData.innerHTML = JSON.stringify(data); // 데이터를 문자열로 변환하여 출력
         let formattedData = '';
         // Object.entries(data) : 객체의 속성과 값으로 구성된 배열을 반환
-        Object.entries(data).forEach(([key, value]) => {
-            formattedData += `${key}: ${value}<br>`;
+        Object.entries(data).forEach(([key, val]) => {
+            formattedData += `${key}: ${val}<br>`;
         });
         apiData.innerHTML = formattedData; // 형식화된 데이터를 출력
     })

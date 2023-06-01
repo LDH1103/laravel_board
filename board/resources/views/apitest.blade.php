@@ -18,9 +18,14 @@
         <br>
         <button type="submit">API TEST!</button>
     </form>
+    <br>
     <div id="apiData">
     </div>
-    <div>POST 사용법 : /api/list/타이틀/컨텐츠</div>
+    <br>
+    <div>GET : /api/list/글 번호</div>
+    <div>POST : /api/list/타이틀/컨텐츠</div>
+    <div>PUT : /api/list/글번호?title=제목&content=내용</div>
+    <div>DELETE : /api/list/글번호</div>
 @endsection
 
 @section('js')
