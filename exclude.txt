@@ -1,6 +1,5 @@
 .git
 bootstrap
-lang
 storage
 tests
 board\vendor

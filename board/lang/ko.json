@@ -1,7 +1,0 @@
-{
-    "The :attribute must contain at least one letter.": "이 :attribute 에는 문자가 하나 이상 포함되어야 합니다.",
-    "The :attribute must contain at least one number.": "이 :attribute 에는 숫자가 하나 이상 포함되어야 합니다.",
-    "The :attribute must contain at least one symbol.": "이 :attribute 에는 특수문자가 하나 이상 포함되어야 합다.",
-    "The :attribute must contain at least one uppercase and one lowercase letter.": "이 :attribute 에는 대문자와 소문자가 하나 이상 포함되어야 합니다.",
-    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute."
-}

@@ -8,19 +8,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Common;
+use App\Mail\SendEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
     public function login() {
+
+        // 로그 남기기
+        // $arr['key'] = 'test';
+        // $arr['kim'] = 'park';
+        // Log::emergency('emergency', $arr);
+        // Log::alert('alert', $arr);
+        // Log::critical('critical', $arr);
+        // Log::error('error', $arr);
+        // Log::warning('warning', $arr);
+        // Log::notice('notice', $arr);
+        // Log::info('info', $arr);
+        // Log::debug('debug', $arr);
+        // Log::debug('debug');
+
         return view('login');
     }
 
     public function loginpost(Request $req) {
+        Log::debug('로그인 시작');
         // 유효성 검사
         $req->validate([
             'email'    => 'required|email|max:100'
@@ -31,8 +50,15 @@ class UserController extends Controller
         $user = User::where('email', $req->email)->first();
         if(!$user || !(Hash::check($req->password, $user->password))) {
             $error = '아이디와 비밀번호를 확인해 주세요.';
+            $errorArr = [
+                '이메일' => $req->email
+                ,'비밀번호'   => Hash::make($req->password)
+                ,'db비밀번호' => $user->password
+            ];
+            Log::debug('유효성 실패', $errorArr);
             return redirect()->back()->with('error', $error);
         }
+        Log::debug('유효성 ok');
 
         // 유저 인증작업
         Auth::login($user);
