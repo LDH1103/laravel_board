@@ -17,9 +17,4 @@ class Boards extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function updateHits()
-    {
-        $this->hits++;
-        $this->saveQuietly();
-    }
 }

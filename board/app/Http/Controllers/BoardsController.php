@@ -1,4 +1,11 @@
 <?php
+/**************************************************
+ * 프로젝트명   : laravel_board
+ * 디렉토리     : Controllers
+ * 파일명       : BoardsController.php
+ * 이력         :   v001 0526 DH.Lee new
+ *                  v002 0530 DH.Lee 유효성 체크 추가
+**************************************************/
 
 // + 쿼리 빌더:
 // + SQL 쿼리를 프로그래밍 방식으로 작성하기 위한 도구
@@ -50,6 +57,7 @@ use App\Models\Boards;
 // + Laravel 프레임워크에서 제공하는 쿠키(Cookie) 기능을 사용하기 위해 필요한 클래스를 선언
 // + Laravel의 Facade를 사용하여 쿠키와 관련된 기능에 쉽게 접근할 수 있도록 도와줍
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator; // v002 add
 
 class BoardsController extends Controller
 {
@@ -60,6 +68,11 @@ class BoardsController extends Controller
      */
     public function index()
     {
+        // 로그인 체크(로그인 안된상태면 접근 못하게)
+        if(auth()->guest()) {
+            return redirect()->route('users.login');
+        }
+
         // $result = Boards::all();
         // $result = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('hits', 'DESC')->get();
         // return view('list')->with('data', $result);
@@ -67,7 +80,7 @@ class BoardsController extends Controller
         // laravel 페이징 사용
         // ->get() 대신, ->paginate(한페이지에 보여줄 글 갯수)를 사용
         // return view('뷰파일 이름', compact('보내줄 변수명')); 
-        $data = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('id', 'DESC')->paginate(10);
+        $data = Boards::select(['id', 'title', 'hits', 'created_at', 'updated_at'])->orderBy('id', 'DESC')->paginate(20);
         return view('list', compact('data'));
     }
 
@@ -78,7 +91,13 @@ class BoardsController extends Controller
      */
     public function create()
     {
+        // 버전관리 예시
+        // v003 update start
+
+        // return view('index');
         return view('write');
+
+        // v003 update end
     }
 
     /**
@@ -89,6 +108,18 @@ class BoardsController extends Controller
      */
     public function store(Request $req)
     {
+
+        // v002 add start
+        // 유효성 검사
+
+        $req->validate([
+            // '받은 값' => '체크해줄것'
+            'title'     => 'required|between:3,30'
+            ,'content'  => 'required|max:2000'
+        ]);
+        
+        // v002 add end
+        
         // 새로 생성해야 하는 데이터기 때문에(insert), 새로운 객체를 생성함(new Boards)
         $boards = new Boards([
             'title'     => $req->input('title')
@@ -150,8 +181,47 @@ class BoardsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, $id)
-    {
+    public function update(Request $req, $id) {
+
+        // v002 add start
+        // 유효성 검사
+
+        // id를 리퀘스트 객체에 합치기
+        $req->request->add(['id' => $id]);
+
+        // 다른방법
+        // $arr = ['id' => $id];
+        // $req->merge($arr);
+
+        // 유효성 검사 방법 1 : error나면 바로 return
+        // $req->validate([
+        //     'title'     => 'required|between:3,30'
+        //     ,'content'  => 'required|max:2000'
+        //     ,'id'       => 'required|integer'
+        //     // ,'id'       => 'required|numeric'
+        // ]);
+
+        // 유효성 검사 방법 2 : error나면 return하지않고 $validator에 값을 담음
+        $validator = Validator::make(
+            $req->only('id', 'title', 'content')
+            ,[
+                'title'     => 'required|between:3,30'
+                ,'content'  => 'required|max:2000'
+                ,'id'       => 'required|integer'
+            ]
+        );
+
+        // $validator->fails() : error가 있다면 true
+        if($validator->fails()) {
+            // redirect()->back(); : 이전에 요청이 왔던 페이지로 돌아감
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput($req->only('title', 'content'));
+        }
+        
+        // v002 add end
+
         $boards = Boards::find($id);
         $boards->title = $req->title;
         $boards->content = $req->content;
