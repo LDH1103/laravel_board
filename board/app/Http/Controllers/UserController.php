@@ -17,11 +17,12 @@ use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Mailable;
 
 class UserController extends Controller
 {
     public function login() {
-
+        
         // 로그 남기기
         // $arr['key'] = 'test';
         // $arr['kim'] = 'park';
@@ -34,10 +35,10 @@ class UserController extends Controller
         // Log::info('info', $arr);
         // Log::debug('debug', $arr);
         // Log::debug('debug');
-
+        
         return view('login');
     }
-
+    
     public function loginpost(Request $req) {
         Log::debug('로그인 시작');
         // 유효성 검사
@@ -45,7 +46,7 @@ class UserController extends Controller
             'email'    => 'required|email|max:100'
             ,'password' => 'required|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
         ]);
-
+        
         // 유저 정보 습득
         $user = User::where('email', $req->email)->first();
         if(!$user || !(Hash::check($req->password, $user->password))) {
@@ -59,7 +60,7 @@ class UserController extends Controller
             return redirect()->back()->with('error', $error);
         }
         Log::debug('유효성 ok');
-
+        
         // 유저 인증작업
         Auth::login($user);
         // Auth::check() : 인증작업 성공여부
@@ -74,11 +75,11 @@ class UserController extends Controller
             return redirect()->back()->with('error', $error);
         }
     }
-
+    
     public function registration() {
         return view('registration');
     }
-
+    
     public function registrationpost(Request $req) {
         // 유효성 검사
         $req->validate([
@@ -86,11 +87,11 @@ class UserController extends Controller
             ,'email'    => 'required|email|max:100'
             ,'password' => 'required_with:passwordchk|same:passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/' // required_with:passwordchk|same:passwordchk : 비밀번호와 비밀번호 확인을 비교함
         ]);
-
+        
         $data['name'] = $req->name;
         $data['email'] = $req->email;
         $data['password'] = Hash::make($req->password); // Hash::make : 해쉬화(암호화)
-
+        
         $user = User::create($data); // insert후 결과가 $user에 담김
         if(!$user) {
             $error = '시스템 에러가 발생하여, 회원 가입에 실패했습니다.<br>잠시 후에 다시 시도해 주십시오.';
@@ -98,11 +99,13 @@ class UserController extends Controller
                 ->route('users.registration')
                 ->with('error', $error);
         }
-
+            
+        Mail::to($user)->send(new SendEmail($user));
+        
         // 회원가입 완료 후 로그인 페이지로 이동
         return redirect()
-            ->route('users.login')
-            ->with('success', '회원가입을 완료 했습니다.<br>가입하신 아이디와 비밀번호로 로그인 해 주십시오.');
+        ->route('users.login')
+        ->with('success', '회원가입을 완료 했습니다.<br>가입하신 아이디와 비밀번호로 로그인 해 주십시오.');
     }
 
     public function logout() {

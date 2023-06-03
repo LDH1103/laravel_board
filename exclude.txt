@@ -1,5 +1,4 @@
 .git
 bootstrap
 storage
-tests
 board\vendor
