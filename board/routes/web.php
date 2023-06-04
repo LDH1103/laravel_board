@@ -8,6 +8,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardsController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -37,3 +38,7 @@ Route::get('/users/logout', [UserController::class, 'logout'])->name('users.logo
 Route::get('/users/withdraw', [UserController::class, 'withdraw'])->name('users.withdraw');
 Route::get('/users/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::post('/users/editpost', [UserController::class, 'editpost'])->name('users.edit.post');
+
+// 메일전송 TEST
+Route::get('/mails/mail', [MailController::class, 'mail'])->name('mails.mail');
+Route::post('/mails/mailpost', [MailController::class, 'mailpost'])->name('mails.mail.post');
