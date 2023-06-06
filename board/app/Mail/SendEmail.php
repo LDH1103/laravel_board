@@ -35,11 +35,20 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('메일 테스트')
-                    ->view('email.sendemail')
-                    ->with([
-                        'user' => $this->user,
-                    ]);
+        // return $this->subject('메일 테스트')
+        //             ->view('email.sendemail')
+        //             ->with([
+        //                 'user' => $this->user,
+        //             ]);
+
+        return $this->view('email.sendemail')
+        ->subject('이메일 인증을 완료해주세요.')
+        ->with([
+                'name'              => $this->user->name,
+                'email'             => $this->user->email,
+                'verification_code' => $this->user->verification_code,
+                'validityPeriod'    => $this->user->validity_period,
+        ]);
     }
 
     // /**

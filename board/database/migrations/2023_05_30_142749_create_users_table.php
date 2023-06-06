@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('password');
             $table->string('email')->unique();
-            $table->string('name');
+            $table->string('verification_code')->nullable();
+            $table->timestamp('validity_period')->nullable(); // + 메일인증코드 만료시간
             $table->timestamp('email_verified_at')->nullable(); // email 인증 시각
+            $table->string('name');
             $table->rememberToken(); // 로그인 유지하기 기능
             $table->timestamps();
             $table->softDeletes();

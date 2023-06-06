@@ -42,3 +42,7 @@ Route::post('/users/editpost', [UserController::class, 'editpost'])->name('users
 // 메일전송 TEST
 Route::get('/mails/mail', [MailController::class, 'mail'])->name('mails.mail');
 Route::post('/mails/mailpost', [MailController::class, 'mailpost'])->name('mails.mail.post');
+
+// 메일인증 TEST
+Route::get('/users/verify/{code}/{email}', [UserController::class, 'verify'])->name('users.verify');
+Route::get('/resend-email', [UserController::class, 'resend_email'])->name('resend.email');

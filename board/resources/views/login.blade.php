@@ -10,6 +10,9 @@
     <div>Login</div>
     @include('layout.inc.errorsvalidate')
     <div>{!!session()->has('success') ? session('success') : ''!!}</div>
+    @if (session('resend_email'))
+        <div>재전송을 원하시면 <a href="{{ session('resend_email_url') }}">이메일 재전송</a>을 클릭해주세요.</div>
+    @endif
     <form action="{{route('users.login.post')}}" method="POST">
         @csrf
         <label for="email">Email : </label>
