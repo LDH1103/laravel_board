@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
     public function login() {
-        
+
         // 로그 남기기
         // $arr['key'] = 'test';
         // $arr['kim'] = 'park';
@@ -39,6 +39,7 @@ class UserController extends Controller
         $ch = curl_init();
         // $url = 'http://openapi.airport.co.kr/service/rest/AirportCodeList/getAirportCodeList'; /*URL*/
         $url = 'http://openapi.airport.co.kr/service/rest/FlightStatusList/getFlightStatusList'; /*URL*/
+        $url = 'http://openapi.airport.co.kr/service/rest/FlightScheduleList/getDflightScheduleList';
         $queryParams = '?' . urlencode('serviceKey') . '=q1Huc9EjZjvBYP%2BNKi0ILB%2FS%2BhmYkimR2o%2FIfQey1bl0NGsyoDHQJVnSYSEwPfvS9C9SqZkaD%2FXMw9SLRkLlqA%3D%3D'; /*Service Key*/
 
         curl_setopt($ch, CURLOPT_URL, $url . $queryParams);
@@ -52,9 +53,9 @@ class UserController extends Controller
         curl_close($ch);
 
         return print_r($a);
-        // return view('login');
+        return view('login');
     }
-    
+
     public function loginpost(Request $req) {
         Log::debug('로그인 시작');
         // 유효성 검사
@@ -62,7 +63,7 @@ class UserController extends Controller
             'email'    => 'required|email|max:100'
             ,'password' => 'required|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/'
         ]);
-        
+
         // 유저 정보 습득
         $user = User::where('email', $req->email)->first();
 
@@ -70,7 +71,7 @@ class UserController extends Controller
             $error = '아이디와 비밀번호를 확인해 주세요.';
             return redirect()->back()->with('error', $error);
         }
-        
+
         if(!$user || !(Hash::check($req->password, $user->password))) {
             $error = '아이디와 비밀번호를 확인해 주세요.';
             $errorArr = [
@@ -90,7 +91,7 @@ class UserController extends Controller
             return redirect()->back()->with('error', $error)->with('resend_email', true)->with('resend_email_url', $resendEmailUrl);
             // return redirect()->back()->with('error', $error);
         }
-        
+
         // 유저 인증작업
         Auth::login($user);
         // Auth::check() : 인증작업 성공여부
@@ -105,11 +106,11 @@ class UserController extends Controller
             return redirect()->back()->with('error', $error);
         }
     }
-    
+
     public function registration() {
         return view('registration');
     }
-    
+
     public function registrationpost(Request $req) {
         // 유효성 검사
         $req->validate([
@@ -117,7 +118,7 @@ class UserController extends Controller
             ,'email'    => 'required|email|max:100'
             ,'password' => 'required_with:passwordchk|same:passwordchk|regex:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*-])(?=.*[0-9]).{8,20}$/' // required_with:passwordchk|same:passwordchk : 비밀번호와 비밀번호 확인을 비교함
         ]);
-        
+
         $data['name'] = $req->name;
         $data['email'] = $req->email;
         $data['password'] = Hash::make($req->password); // Hash::make : 해쉬화(암호화)
@@ -181,26 +182,26 @@ class UserController extends Controller
     // + 이메일 인증 재전송 TEST
     public function resend_email(Request $req) {
         $user = User::where('email', $req->email)->first();
-    
+
         if (!$user) {
             $error = '해당 이메일로 가입된 계정이 없습니다.';
             return redirect()->back()->with('error', $error);
         }
-    
+
         if ($user->email_verified_at) {
             $error = '해당 계정은 이미 이메일 인증이 완료되었습니다.';
             return redirect()->back()->with('error', $error);
         }
-    
+
         $verification_code = Str::random(30);
         $validity_period = now()->addMinutes(1);
 
         $user->verification_code = $verification_code;
         $user->validity_period = $validity_period;
         $user->save();
-    
+
         Mail::to($user->email)->send(new SendEmail($user));
-    
+
         $success = '이메일 인증 메일을 재전송하였습니다.<br>이메일을 확인하여 계정을 활성화해 주세요.';
         return redirect()->back()->with('success', $success);
     }
@@ -325,7 +326,7 @@ class UserController extends Controller
             $baseuser->$val = $req->$val;
         }
         $baseuser->save(); // update
-        
+
         // ---------------------------------------------------
 
         return redirect()->route('users.edit');
