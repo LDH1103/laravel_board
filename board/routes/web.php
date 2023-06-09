@@ -46,3 +46,6 @@ Route::post('/mails/mailpost', [MailController::class, 'mailpost'])->name('mails
 // 메일인증 TEST
 Route::get('/users/verify/{code}/{email}', [UserController::class, 'verify'])->name('users.verify');
 Route::get('/resend-email', [UserController::class, 'resend_email'])->name('resend.email');
+
+// 카카오 로그인 TEST
+Route::get('/logintest', [UserController::class, 'logintest']);

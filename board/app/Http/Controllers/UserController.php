@@ -331,4 +331,8 @@ class UserController extends Controller
 
         return redirect()->route('users.edit');
     }
+
+    public function logintest() {
+        return view('logintest');
+    }
 }
